@@ -1,0 +1,47 @@
+x<?php
+
+//ini_set("display_errors",1);
+//print_r($_SERVER);
+session_start();                          //iniciar la sesion para el uso de variables de sesion
+header('X-Powered-By: Cloud computing engine of IGIA MEDIA MOBILITY');     //potenciado por mi ;)
+header('Content-Type: text/html; charset=utf-8');
+ini_set('output_buffering', 'on');
+ini_set('display_errors',1);
+setlocale(LC_ALL, 'es_ES.UTF-8');
+date_default_timezone_set ("America/Bogota");
+ob_start();
+//verificar si es protocolo seguro
+$SecureProtocol = (
+		(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on")
+		|| (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"]=="https" )
+		|| (isset($_SERVER["HTTP_CF_VISITOR"]) && strstr($_SERVER["HTTP_CF_VISITOR"],"https")!=false )
+	)?true:false;
+define('__secureprotocol', $SecureProtocol);
+require('autoload.php');
+
+if(isset($_GET['modulo']) && $_GET['modulo']=='manifest'){
+	require('frame_manifest.php');
+	exit();
+}
+
+//deteccion de dispositivos moviles
+if (isMobile()) { //cualquier dispositivo móvil
+	if(file_exists(__path.'index.mobile.php')){
+		require (__path.'index.mobile.php');
+	}else{
+		require (__path.'index.php');
+	}
+}else{
+	require (__path.'index.php');
+}
+
+/*
+*define la og imagen del sitio
+*debe estar en el directorio /recursos/img/og.png
+*/
+if (file_exists(__path."/recursos/img/og.png")) {
+	$og = __url_canonica.__path."recursos/img/og.png";
+	define("__og_image", $og);
+}
+require ('utilidades/processor.php');     //carga post procesador de contenidos de cada sitio
+?>

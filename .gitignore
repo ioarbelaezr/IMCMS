@@ -1,0 +1,8 @@
+sftp-config.json
+sites
+init/config.php
+#ignorar archivos del menu desplegable
+componentes/menuDesplegable
+utilidades/classes/menuDesplegable.php
+#imagenes de perfil del sistema
+imagenesDePerfil

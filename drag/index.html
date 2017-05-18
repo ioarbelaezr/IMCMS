@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+<script src="/plantillas/admin/res/angular-drag-and-drop-lists.min.js"></script>
+
+<div ng-app="demo" ng-controller="NestedListsDemoController">
+	<!-- Markup for lists inside the dropzone. It's inside a seperate template
+     because it will be used recursively. The dnd-list directive enables
+     to drop elements into the referenced array. The dnd-draggable directive
+     makes an element draggable and will transfer the object that was
+     assigned to it. If an element was dragged away, you have to remove
+     it from the original list yourself using the dnd-moved attribute -->
+<script type="text/ng-template" id="list.html">
+    <ul dnd-list="list">
+        <li ng-repeat="item in list"
+            dnd-draggable="item"
+            dnd-effect-allowed="move"
+            dnd-moved="list.splice($index, 1)"
+            dnd-selected="models.selected = item"
+            ng-class="{selected: models.selected === item}"
+            ng-include="item.type + '.html'">
+        </li>
+    </ul>
+</script>
+
+<!-- This template is responsible for rendering a container element. It uses
+     the above list template to render each container column -->
+<script type="text/ng-template" id="container.html">
+    <div class="container-element box box-blue">
+        <h3>Container {{item.id}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="item.html">
+    <div class="item">Item {{item.id}}</div>
+</script>
+
+<!-- Main area with dropzones and source code -->
+<div class="col-md-10">
+    <div class="row">
+        <div ng-repeat="(zone, list) in models.dropzones" class="col-md-6">
+            <div class="dropzone box box-yellow">
+                <!-- The dropzone also uses the list template -->
+                <h3>Dropzone {{zone}}</h3>
+                <div ng-include="'list.html'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div view-source="nested"></div>
+
+    <h2>Generated Model</h2>
+    <pre>{{modelAsJson}}</pre>
+</div>
+
+<!-- Sidebar -->
+<div class="col-md-2">
+
+    <div class="toolbox box box-grey box-padding">
+        <h3>New Elements</h3>
+        <ul>
+            <!-- The toolbox only allows to copy objects, not move it. After a new
+                 element was created, dnd-copied is invoked and we generate the next id -->
+            <li ng-repeat="item in models.templates"
+                dnd-draggable="item"
+                dnd-effect-allowed="copy"
+                dnd-copied="item.id = item.id + 1"
+                >
+                <button type="button" class="btn btn-default btn-lg" disabled="disabled">{{item.type}}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div ng-if="models.selected" class="box box-grey box-padding">
+        <h3>Selected</h3>
+        <strong>Type: </strong> {{models.selected.type}}<br>
+        <input type="text" ng-model="models.selected.id" class="form-control" style="margin-top: 5px" />
+    </div>
+
+    <div class="trashcan box box-grey box-padding">
+        <!-- If you use [] as referenced list, the dropped elements will be lost -->
+        <h3>Trashcan</h3>
+        <ul dnd-list="[]">
+            <li><img src="nested/trashcan.jpg"></li>
+        </ul>
+    </div>
+
+</div>
+</div>
+
+<style type="text/css">
+	/***************************** Required styles *****************************/
+
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+.nestedDemo ul[dnd-list],
+.nestedDemo ul[dnd-list] > li {
+	position: relative;
+}
+
+/***************************** Dropzone Styling *****************************/
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.nestedDemo .dropzone ul[dnd-list] {
+    min-height: 42px;
+    margin: 0px;
+    padding-left: 0px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.nestedDemo .dropzone li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: block;
+    padding: 0px;
+}
+
+/**
+ * Reduce opacity of elements during the drag operation. This allows the user
+ * to see where he is dropping his element, even if the element is huge. The
+ * .dndDragging class is automatically set during the drag operation.
+ */
+.nestedDemo .dropzone .dndDragging {
+    opacity: 0.7;
+}
+
+/**
+ * The dndDraggingSource class will be applied to the source element of a drag
+ * operation. It makes sense to hide it to give the user the feeling that he's
+ * actually moving it. Note that the source element has also .dndDragging class.
+ */
+.nestedDemo .dropzone .dndDraggingSource {
+    display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be added as child of the dnd-list
+ * while the user is dragging over it.
+ */
+.nestedDemo .dropzone .dndPlaceholder {
+    background-color: #ddd;
+    min-height: 42px;
+    display: block;
+    position: relative;
+}
+
+/***************************** Element Selection *****************************/
+
+.nestedDemo .dropzone .selected .item {
+    color: #3c763d;
+    background-color: #dff0d8;
+}
+
+.nestedDemo .dropzone .selected .box {
+    border-color: #d6e9c6;
+}
+
+.nestedDemo .dropzone .selected .box > h3 {
+    color: #3c763d;
+    background-color: #dff0d8;
+    background-image: linear-gradient(to bottom,#dff0d8 0,#d0e9c6 100%);
+    border-color: #d6e9c6;
+}
+
+/***************************** Element type specific styles *****************************/
+
+.nestedDemo .dropzone .item {
+    padding: 10px 15px;
+}
+
+.nestedDemo .dropzone .container-element {
+    margin: 10px;
+}
+
+.nestedDemo .dropzone .container-element .column {
+    float: left;
+    width: 50%;
+}
+
+/***************************** Toolbox *****************************/
+
+.nestedDemo .toolbox ul {
+    list-style: none;
+    padding-left: 0px;
+    cursor: move;
+}
+
+.nestedDemo .toolbox button {
+    margin: 5px;
+    width: 123px;
+    opacity: 1.0;
+}
+
+.nestedDemo .toolbox .dndDragging {
+    opacity: 0.5;
+}
+
+.nestedDemo .toolbox .dndDraggingSource {
+    opacity: 1.0;
+}
+
+/***************************** Trashcan *****************************/
+
+.nestedDemo .trashcan ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.nestedDemo .trashcan img {
+    width: 100%;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+.nestedDemo .trashcan .dndDragover img {
+    width: 100%;
+    -webkit-filter: none;
+    -moz-filter: none;
+    filter: none;
+}
+
+.nestedDemo .trashcan .dndPlaceholder {
+    display: none;
+}
+
+</style>
+
+<script type="text/javascript">
+	/**
+ * The controller doesn't do much more than setting the initial data model
+ */
+angular.module("demo").controller("NestedListsDemoController", function($scope) {
+
+    $scope.models = {
+        selected: null,
+        templates: [
+            {type: "item", id: 2},
+            {type: "container", id: 1, columns: [[], []]}
+        ],
+        dropzones: {
+            "A": [
+                {
+                    "type": "container",
+                    "id": 1,
+                    "columns": [
+                        [
+                            {
+                                "type": "item",
+                                "id": "1"
+                            },
+                            {
+                                "type": "item",
+                                "id": "2"
+                            }
+                        ],
+                        [
+                            {
+                                "type": "item",
+                                "id": "3"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "type": "item",
+                    "id": "4"
+                },
+                {
+                    "type": "item",
+                    "id": "5"
+                },
+                {
+                    "type": "item",
+                    "id": "6"
+                }
+            ],
+            "B": [
+                {
+                    "type": "item",
+                    "id": 7
+                },
+                {
+                    "type": "item",
+                    "id": "8"
+                },
+                {
+                    "type": "container",
+                    "id": "2",
+                    "columns": [
+                        [
+                            {
+                                "type": "item",
+                                "id": "9"
+                            },
+                            {
+                                "type": "item",
+                                "id": "10"
+                            },
+                            {
+                                "type": "item",
+                                "id": "11"
+                            }
+                        ],
+                        [
+                            {
+                                "type": "item",
+                                "id": "12"
+                            },
+                            {
+                                "type": "container",
+                                "id": "3",
+                                "columns": [
+                                    [
+                                        {
+                                            "type": "item",
+                                            "id": "13"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "type": "item",
+                                            "id": "14"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "type": "item",
+                                "id": "15"
+                            },
+                            {
+                                "type": "item",
+                                "id": "16"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "type": "item",
+                    "id": 16
+                }
+            ]
+        }
+    };
+
+    $scope.$watch('models.dropzones', function(model) {
+        $scope.modelAsJson = angular.toJson(model, true);
+    }, true);
+
+});
+</script>
+
+</body>
+</html>

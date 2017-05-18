@@ -1,0 +1,47 @@
+body{background-color: #E2EEF4;padding: 0px;margin: 0px;}
+
+.admin_page{position: relative;width: 100%;box-sizing: border-box;min-width: 1100px}
+.admin_sidebar{height:100%;background: #272634;width: 250px;float: left;margin-right: -100%;z-index: 120;position: fixed;top: 0;left: 0;}
+
+.admin{float: left;width: 100%;z-index: 110;padding-top: 60px;}
+.admin_content_wrapper{margin-left: 250px;padding: 20px 30px;}
+.admin_header{min-width:1100px;background-color:white;position: fixed;width: 100%;padding-left: 250px;left: 0;top: 0;height: 60px;z-index: 100;}
+.admin_header h2{display: inline-block;padding-left: 28px;margin-top: 11px;width: calc(100% - 200px);overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+
+.user_signed_in{padding-top:9px;display: inline-block;height: 100%;position: relative;float: right;width: 200px;}
+.user_signed_in a{font-weight: bold;color: #4C5561;}
+.user_signed_in a:hover{color: #2EA3FF;}
+.user_signed_in a span{display: block;float: left;height: 40px;line-height: 40px;padding-left: 10px;padding-right: 15px;overflow: hidden;width: calc(100% - 40px);white-space: nowrap;text-overflow: ellipsis;}
+.user_image{overflow: hidden;height: 40px;width: 40px;border-radius: 50%;background-color: green;display: block;float: left;}
+.user_image img{width: 100%;}
+.user_menu{display:none;box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);background-color: #F9F9F9;position: absolute;height: auto;width: 250px;right: 9px;top: 65px;}
+.user_menu ul{list-style-type: none;padding: 0px;margin: 0px;}
+.user_menu ul a{display: block;font-weight: 100;padding: 5px 10px;transition: 0.2s all}
+.user_menu ul a:hover{background: #eff4f6;text-decoration: none;}
+.user_menu:after{position: absolute;right: 5px;top: -5px;content: "";
+    position: absolute;
+    right: 5px;
+    top: -14px;
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 14px solid #F9F9F9;}
+
+.home{height: 60px;color: black;background-color: white;line-height: 60px;font-size: 48px;cursor: pointer;}
+.home a{color: black;display: block;height: 100%;width: 100%;transition: 0.2s all;}
+.home a:hover{background-color: #eff4f6;}
+
+.homeLink{width: 100%;height: 60px;padding-left: 15px;line-height: 60px;color:white;transition: 0.2s all;}
+.homeLink a{color: white;display: block;height: 100%;width: 100%;text-decoration: none;font-size: 17px;transition: 0.2s all}
+.homeLink a:hover{color: #2EA3FF;}
+.homeLink:hover{background:#E2EEF4;}
+
+.admin_header h2 a{color:#4C5561;text-decoration:none;}
+.admin_header h2 a:hover{color: #2EA3FF;}
+
+.bienvenida{font-size: 17px;}
+
+.mensaje-bienvenida{font-size: 36px;text-transform: capitalize;}
+.mensaje-bienvenida span{color:#005986;

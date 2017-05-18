@@ -1,0 +1,114 @@
+
+#reglas de reescritura de urls para la pagina
+AddDefaultCharset utf-8
+
+RewriteEngine On
+#negar acceso
+RewriteRule ^(init|utilidades)/+ - [F,L]
+#ErrorDocument 403 "Acceso sospechoso... Se notificara al administrador del sitio."
+
+#impedir reescrituras para contenidos de frontend y el filemanager
+RewriteRule ^(frontend|filemanager)($|/) - [L]
+
+#robots.txt del sistema
+RewriteRule ^robots.txt$ /index.php?acc=robots [L]
+#generar el sitemap del sistema
+RewriteRule ^sitemap.xml$ /index.php?acc=sitemap [L]
+
+#inicio de sesion 
+RewriteRule ^login$ /index.php?modulo=login&funcion=login&ajax [L]
+#chat
+RewriteRule ^chat$ /index.php?modulo=chat&funcion=chat&ajax [L]
+#cerraer la sesion
+RewriteRule ^logout$ /index.php?modulo=login&funcion=logout [L]
+#recuperar la contraseña
+#RewriteRule ^forgotPass$ /index.php?modulo=login&funcion=logout [L]
+
+
+#reescritura para administrando
+RewriteRule ^adm/$ /index.php?adm=gen&gp=2&modulo=dashboard&funcion=dashboard [L]
+RewriteRule ^adm/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$1 [L]
+RewriteRule ^adm/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2 [L]
+RewriteRule ^adm/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3 [L]
+RewriteRule ^adm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4 [L]
+RewriteRule ^adm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5 [L]
+RewriteRule ^adm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&text4=$6 [L]
+
+#reescritura para administrando (llevan ajax) 
+RewriteRule ^xadm/$ /index.php?adm=gen&gp=1&ajax [L]
+RewriteRule ^xadm/([^/]*)/$ /index.php?adm=gen&modulo=$1&ajax [L]
+RewriteRule ^xadm/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&ajax [L]
+RewriteRule ^xadm/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&ajax [L]
+RewriteRule ^xadm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4&ajax [L]
+RewriteRule ^xadm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&ajax [L]
+RewriteRule ^xadm/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?adm=gen&modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&text4=$6&ajax [L]
+
+
+#reescritura vistas publicas (llevan ajax)
+RewriteRule ^x([^/]*)/$ /index.php?modulo=$1&ajax [L]
+RewriteRule ^x([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&ajax [L]
+RewriteRule ^x([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&ajax [L]
+RewriteRule ^x([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&ajax [L]
+RewriteRule ^x([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&ajax [L]
+RewriteRule ^x([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&text4=$6&ajax [L]
+
+#reescritura LinkManager
+RewriteRule ^LM([^/]*)/$ /index.php?modulo=$1&LM [L]
+RewriteRule ^LM([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&LM [L]
+RewriteRule ^LM([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&LM [L]
+RewriteRule ^LM([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&LM [L]
+RewriteRule ^LM([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&LM [L]
+RewriteRule ^LM([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&text4=$6&LM [L]
+
+
+#reescritura vistas publicas
+RewriteRule ^$ /index.php?gp=1 [L]
+RewriteRule ^([^/]*)/$ /index.php?modulo=$1 [L]
+RewriteRule ^([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2 [L]
+RewriteRule ^([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3 [L]
+RewriteRule ^([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4 [L]
+RewriteRule ^([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5 [L]
+RewriteRule ^([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?modulo=$1&funcion=$2&text1=$3&text2=$4&text3=$5&text4=$6 [L]
+
+
+#tiempos de expiracion de los contenidos
+
+<IfModule mod_expires.c>
+  ExpiresActive on
+  ExpiresByType image/gif                 "access plus 1 month"
+  ExpiresByType image/png                 "access plus 1 month"
+  ExpiresByType image/jpg                 "access plus 1 month"
+  ExpiresByType image/jpeg                "access plus 1 month"
+  ExpiresByType video/ogg                 "access plus 1 month"
+  ExpiresByType audio/ogg                 "access plus 1 month"
+  ExpiresByType video/mp4                 "access plus 1 month"
+  ExpiresByType video/webm                "access plus 1 month"
+
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType text/javascript           "access plus 1 year"
+</IfModule>
+
+#comprimir los contenidos que son enviados a los clientes
+
+<IfModule mod_gzip.c>
+  mod_gzip_on Yes
+  mod_gzip_item_include file \.html$
+  mod_gzip_item_include file \.php$
+  mod_gzip_item_include file \.css$
+  mod_gzip_item_include file \.js$
+  mod_gzip_item_include mime ^application/javascript$
+  mod_gzip_item_include mime ^application/x-javascript$
+  mod_gzip_item_include mime ^text/.*
+  mod_gzip_item_include handler ^application/x-httpd-php
+  mod_gzip_item_exclude mime ^image/.*
+</IfModule>
+
+
+
+#documentos de error
+
+ErrorDocument 404 /plantillas/404.html
+
+AddDefaultCharset  ISO-8859-1
+
