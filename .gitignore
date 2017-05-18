@@ -2,7 +2,8 @@ sftp-config.json
 sites
 init/config.php
 #ignorar archivos del menu desplegable
-componentes/menuDesplegable
+componentes/*
 utilidades/classes/menuDesplegable.php
+.c9
 #imagenes de perfil del sistema
 imagenesDePerfil
